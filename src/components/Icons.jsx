@@ -151,3 +151,36 @@ export const Bulb = (p) => (
     <path d="M12 3a6 6 0 0 1 3.5 10.9c-.6.5-.9 1-.9 1.7v.4h-5.2v-.4c0-.7-.3-1.2-.9-1.7A6 6 0 0 1 12 3z" />
   </Icon>
 )
+
+/**
+ * The Waira mark — a friendly robot head whose smile is a "W", tying the
+ * assistant back to Wajid. Mixes fills and strokes, so it builds its own
+ * <svg> instead of going through `Icon`.
+ */
+export const WairaMark = ({ size = 18, ...rest }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.7"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    {...rest}
+  >
+    {/* Antenna */}
+    <circle cx="12" cy="2.5" r="1.2" fill="currentColor" stroke="none" />
+    <path d="M12 3.9v1.9" />
+    {/* Head */}
+    <rect x="4" y="5.8" width="16" height="12.5" rx="4.4" />
+    {/* Ears */}
+    <path d="M2.2 11.3v2.5M21.8 11.3v2.5" />
+    {/* Eyes */}
+    <circle cx="9.2" cy="11" r="1.3" fill="currentColor" stroke="none" />
+    <circle cx="14.8" cy="11" r="1.3" fill="currentColor" stroke="none" />
+    {/* Smile shaped like a W */}
+    <path d="M8.6 14.3l1.7 1.7 1.7-1.7 1.7 1.7 1.7-1.7" />
+  </svg>
+)

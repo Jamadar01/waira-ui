@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 
-import { Message, Plus, Search, Sparkle } from './Icons.jsx'
+import { Message, Plus, Search } from './Icons.jsx'
+import Logo from './Logo.jsx'
 
 export default function Sidebar({ conversations, activeId, onSelect, onNew, open }) {
   const [query, setQuery] = useState('')
@@ -21,12 +22,7 @@ export default function Sidebar({ conversations, activeId, onSelect, onNew, open
   return (
     <aside className={`sidebar${open ? ' sidebar--open' : ''}`}>
       <div className="sidebar__top">
-        <span className="brand">
-          <span className="brand__mark">
-            <Sparkle size={17} />
-          </span>
-          Waira
-        </span>
+        <Logo size={30} />
       </div>
 
       <button type="button" className="btn-new" onClick={onNew}>

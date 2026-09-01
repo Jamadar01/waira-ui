@@ -54,6 +54,25 @@
   box-shadow: var(--bubble-user-shadow);
 }
 
+.brand__name {
+  font-size: 15px;
+}
+
+/* Top bar lockup: the mark and wordmark, then a hairline before the chat
+   title, so the brand reads separately from the conversation name. */
+.topbar__brand {
+  flex-shrink: 0;
+  font-size: 14px;
+  gap: 8px;
+}
+
+.topbar__sep {
+  flex-shrink: 0;
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+}
+
 .btn-new {
   display: flex;
   align-items: center;
@@ -735,6 +754,11 @@
 @media (max-width: 860px) {
   .app {
     grid-template-columns: 1fr;
+  }
+
+  .topbar__brand .brand__name,
+  .topbar__sep {
+    display: none;
   }
 
   .only-mobile {

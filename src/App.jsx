@@ -5,7 +5,7 @@ import MessageItem from './components/MessageItem.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import TopBar from './components/TopBar.jsx'
 import Welcome from './components/Welcome.jsx'
-import { Sparkle } from './components/Icons.jsx'
+import { WairaMark } from './components/Icons.jsx'
 import { useTheme } from './hooks/useTheme.js'
 import { askAgent, isApiConfigured } from './lib/api.js'
 
@@ -152,7 +152,7 @@ export default function App() {
               {pending && (
                 <div className="msg msg--assistant">
                   <span className="avatar">
-                    <Sparkle size={16} />
+                    <WairaMark size={17} />
                   </span>
                   <div className="msg__body">
                     <div className="typing" aria-label="Waira is typing">

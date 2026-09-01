@@ -1,11 +1,11 @@
-import { Sparkle } from './Icons.jsx'
+import { WairaMark } from './Icons.jsx'
 import { suggestions } from '../data/seed.js'
 
 export default function Welcome({ onPick }) {
   return (
     <div className="welcome">
       <span className="welcome__mark">
-        <Sparkle size={28} />
+        <WairaMark size={30} />
       </span>
 
       <h1>Hello, this is Waira — Wajid’s personal assistant</h1>

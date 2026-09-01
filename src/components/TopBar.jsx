@@ -1,5 +1,6 @@
 import ThemeToggle from './ThemeToggle.jsx'
 import { Menu } from './Icons.jsx'
+import Logo from './Logo.jsx'
 
 export default function TopBar({ title, theme, onToggleTheme, onOpenSidebar }) {
   return (
@@ -12,6 +13,10 @@ export default function TopBar({ title, theme, onToggleTheme, onOpenSidebar }) {
       >
         <Menu size={19} />
       </button>
+
+      <Logo size={26} className="topbar__brand" />
+
+      <span className="topbar__sep" aria-hidden="true" />
 
       <h1 className="topbar__title">{title}</h1>
 

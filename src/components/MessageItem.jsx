@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import MessageContent from './MessageContent.jsx'
-import { Check, Copy, Refresh, Sparkle, ThumbDown, ThumbUp } from './Icons.jsx'
+import { Check, Copy, Refresh, ThumbDown, ThumbUp, WairaMark } from './Icons.jsx'
 
 export default function MessageItem({ message, isNew }) {
   const [copied, setCopied] = useState(false)
@@ -25,7 +25,7 @@ export default function MessageItem({ message, isNew }) {
     >
       {!isUser && (
         <span className="avatar">
-          <Sparkle size={16} />
+          <WairaMark size={17} />
         </span>
       )}
 
