@@ -32,6 +32,8 @@ export default function MessageItem({ message, isNew }) {
       <div className="msg__body">
         {isUser ? (
           <div className="bubble-user">{message.content}</div>
+        ) : message.error ? (
+          <p className="msg__error">{message.content}</p>
         ) : (
           <>
             <MessageContent content={message.content} />

@@ -371,6 +371,16 @@
   color: var(--text);
 }
 
+/* A failed request, shown in place of an answer. */
+.msg__error {
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--text-muted);
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
 .msg__body p + p {
   margin-top: 12px;
 }

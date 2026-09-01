@@ -7,24 +7,35 @@ import TopBar from './components/TopBar.jsx'
 import Welcome from './components/Welcome.jsx'
 import { Sparkle } from './components/Icons.jsx'
 import { useTheme } from './hooks/useTheme.js'
-import { conversations as seedConversations, getReply } from './data/seed.js'
+import { askAgent, isApiConfigured } from './lib/api.js'
 
 let idCounter = 0
 const nextId = (prefix) => `${prefix}-${Date.now()}-${idCounter++}`
 
+const newChat = () => ({ id: nextId('c'), title: 'New chat', group: 'Today', messages: [] })
+
 export default function App() {
   const { theme, toggleTheme } = useTheme()
 
-  const [chats, setChats] = useState(seedConversations)
-  const [activeId, setActiveId] = useState(seedConversations[0].id)
+  const [chats, setChats] = useState(() => [newChat()])
+  const [activeId, setActiveId] = useState(() => chats[0].id)
   const [draft, setDraft] = useState('')
   const [pending, setPending] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const threadRef = useRef(null)
-  const replyTimer = useRef(null)
   // Only the turn we just added animates in; history renders instantly.
   const newestId = useRef(null)
+  const mounted = useRef(true)
+
+  useEffect(() => {
+    // Set on mount as well as cleared on unmount: StrictMode mounts twice in
+    // dev, and a cleanup-only ref would stay false for the rest of the session.
+    mounted.current = true
+    return () => {
+      mounted.current = false
+    }
+  }, [])
 
   const active = chats.find((chat) => chat.id === activeId) ?? chats[0]
 
@@ -34,20 +45,21 @@ export default function App() {
     if (el) el.scrollTop = el.scrollHeight
   }, [active?.messages.length, pending, activeId])
 
-  useEffect(() => () => clearTimeout(replyTimer.current), [])
-
-  const patchActive = (updater) => {
-    setChats((prev) => prev.map((chat) => (chat.id === activeId ? updater(chat) : chat)))
+  const patchChat = (id, updater) => {
+    setChats((prev) => prev.map((chat) => (chat.id === id ? updater(chat) : chat)))
   }
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const text = draft.trim()
     if (!text || pending) return
+
+    // Pin the thread we are answering, so switching chats mid-request is safe.
+    const chatId = active.id
 
     const message = { id: nextId('u'), role: 'user', content: text }
     newestId.current = message.id
 
-    patchActive((chat) => ({
+    patchChat(chatId, (chat) => ({
       ...chat,
       // A fresh chat takes its name from the opening message.
       title: chat.messages.length === 0 ? text.slice(0, 42) : chat.title,
@@ -57,25 +69,33 @@ export default function App() {
     setDraft('')
     setPending(true)
 
-    // Stand-in for a real request. Swap this block for your API call.
-    replyTimer.current = setTimeout(() => {
-      const reply = {
+    let reply
+
+    try {
+      if (!isApiConfigured) {
+        throw new Error('No backend is configured. Set VITE_API_URL and restart the dev server.')
+      }
+      reply = { id: nextId('a'), role: 'assistant', content: await askAgent(text) }
+    } catch (error) {
+      reply = {
         id: nextId('a'),
         role: 'assistant',
-        content: getReply(text),
+        error: true,
+        content: `${error.message} Please try again in a moment.`,
       }
-      newestId.current = reply.id
+    }
 
-      patchActive((chat) => ({ ...chat, messages: [...chat.messages, reply] }))
-      setPending(false)
-    }, 1200)
+    if (!mounted.current) return
+
+    newestId.current = reply.id
+    patchChat(chatId, (chat) => ({ ...chat, messages: [...chat.messages, reply] }))
+    setPending(false)
   }
 
   const handleNewChat = () => {
-    clearTimeout(replyTimer.current)
     setPending(false)
 
-    const chat = { id: nextId('c'), title: 'New chat', group: 'Today', messages: [] }
+    const chat = newChat()
     setChats((prev) => [chat, ...prev])
     setActiveId(chat.id)
     setDraft('')
@@ -83,7 +103,6 @@ export default function App() {
   }
 
   const handleSelect = (id) => {
-    clearTimeout(replyTimer.current)
     setPending(false)
     setActiveId(id)
     setSidebarOpen(false)
