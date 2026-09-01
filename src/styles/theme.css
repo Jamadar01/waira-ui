@@ -1,0 +1,161 @@
+/* ==========================================================================
+   Theme tokens
+   --------------------------------------------------------------------------
+   Every color in the app comes from a semantic variable defined here. The
+   `[data-theme]` attribute on <html> swaps the whole set at once, so no
+   component ever needs to know which theme is active.
+
+   Light = airy, tinted with blue and violet.
+   Dark  = deeper base with more saturated, glowing accents.
+   ========================================================================== */
+
+:root {
+  /* Typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
+    'Liberation Mono', monospace;
+
+  /* Scale — shared across themes */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-full: 999px;
+
+  --sidebar-w: 272px;
+  --thread-w: 46rem;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --speed: 180ms;
+}
+
+/* --------------------------------------------------------------------------
+   Light — blue / violet
+   -------------------------------------------------------------------------- */
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  /* Brand */
+  --brand-blue: #4f5bf0;
+  --brand-blue-strong: #3f49dd;
+  --brand-violet: #8b5cf6;
+  --brand-violet-strong: #7c3aed;
+
+  /* Surfaces — each step is tinted toward the brand, never neutral grey */
+  --bg: #f2f3fd;
+  --bg-sidebar: #eaebfa;
+  --surface: #ffffff;
+  --surface-2: #f7f7ff;
+  --surface-hover: #eeefff;
+  --surface-active: #e5e6fb;
+
+  /* Ambient light behind the app shell */
+  --glow-1: rgba(99, 102, 241, 0.16);
+  --glow-2: rgba(168, 85, 247, 0.14);
+  --glow-opacity: 1;
+
+  /* Lines */
+  --border: #e2e3f6;
+  --border-strong: #d0d1ee;
+
+  /* Text */
+  --text: #191a2e;
+  --text-muted: #55567a;
+  --text-subtle: #8788a8;
+  --text-on-accent: #ffffff;
+
+  /* Accent */
+  --accent: var(--brand-blue);
+  --accent-hover: var(--brand-blue-strong);
+  --accent-2: var(--brand-violet);
+  --accent-soft: rgba(79, 91, 240, 0.1);
+  --accent-soft-hover: rgba(79, 91, 240, 0.16);
+  --accent-line: rgba(79, 91, 240, 0.28);
+
+  --gradient: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-violet) 100%);
+  --gradient-soft: linear-gradient(
+    135deg,
+    rgba(79, 91, 240, 0.12) 0%,
+    rgba(139, 92, 246, 0.12) 100%
+  );
+
+  /* Chat-specific */
+  --bubble-user: var(--gradient);
+  --bubble-user-text: #ffffff;
+  --bubble-user-shadow: 0 6px 18px -6px rgba(99, 74, 240, 0.5);
+  --code-bg: #f4f4ff;
+
+  /* Depth */
+  --shadow-sm: 0 1px 2px rgba(28, 27, 71, 0.06);
+  --shadow-md: 0 4px 16px -4px rgba(28, 27, 71, 0.12);
+  --shadow-lg: 0 18px 40px -18px rgba(28, 27, 71, 0.28);
+  --ring: 0 0 0 3px rgba(79, 91, 240, 0.28);
+
+  --scrollbar: #d5d6ee;
+  --scrollbar-hover: #bfc0e2;
+}
+
+/* --------------------------------------------------------------------------
+   Dark — same hues, pushed brighter and more saturated
+   -------------------------------------------------------------------------- */
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Brand — lifted for contrast and punch against the dark base */
+  --brand-blue: #7b87ff;
+  --brand-blue-strong: #929cff;
+  --brand-violet: #c084fc;
+  --brand-violet-strong: #d0a2ff;
+
+  /* Surfaces — deep indigo-black rather than pure grey */
+  --bg: #08080f;
+  --bg-sidebar: #0c0c17;
+  --surface: #14142450;
+  --surface-2: #1a1a2e;
+  --surface-hover: #21213a;
+  --surface-active: #2a2a49;
+
+  /* Ambient light — brighter and wider in dark, this is where the vibrance
+     mostly comes from */
+  --glow-1: rgba(99, 102, 241, 0.4);
+  --glow-2: rgba(192, 132, 252, 0.32);
+  --glow-opacity: 1;
+
+  --border: #262640;
+  --border-strong: #35355a;
+
+  --text: #ececf7;
+  --text-muted: #a6a6c8;
+  --text-subtle: #73738f;
+  --text-on-accent: #0b0b16;
+
+  --accent: var(--brand-blue);
+  --accent-hover: var(--brand-blue-strong);
+  --accent-2: var(--brand-violet);
+  --accent-soft: rgba(123, 135, 255, 0.16);
+  --accent-soft-hover: rgba(123, 135, 255, 0.24);
+  --accent-line: rgba(123, 135, 255, 0.4);
+
+  --gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 55%, #d946ef 100%);
+  --gradient-soft: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.22) 0%,
+    rgba(168, 85, 247, 0.22) 100%
+  );
+
+  --bubble-user: var(--gradient);
+  --bubble-user-text: #ffffff;
+  --bubble-user-shadow: 0 8px 26px -8px rgba(139, 92, 246, 0.75);
+  --code-bg: #12121f;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 6px 22px -6px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 24px 50px -20px rgba(0, 0, 0, 0.75);
+  --ring: 0 0 0 3px rgba(123, 135, 255, 0.38);
+
+  --scrollbar: #2c2c4a;
+  --scrollbar-hover: #3d3d63;
+}
