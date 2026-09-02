@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
       // no CORS middleware, so every call fails — curl works, the app doesn't.
       proxy: {
         '/api': {
-          target: env.VITE_PROXY_TARGET || 'http://127.0.0.1:8000',
+          target: env.VITE_PROXY_TARGET ,
           changeOrigin: true,
         },
       },
