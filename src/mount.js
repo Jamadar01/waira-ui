@@ -39,6 +39,10 @@ const script = document.currentScript
 const config = {
   label: script?.dataset.label || 'Ask about Wajid',
   theme: script?.dataset.theme || 'auto',
+  // Where the panel's "open full chat" link goes. Defaults to the site this
+  // script was served from, which is the standalone Waira app in every normal
+  // deployment; `data-site-url` overrides it.
+  siteUrl: script?.dataset.siteUrl || (script?.src ? new URL('.', script.src).href : ''),
 }
 
 /** Mirror the host page's theme onto the widget, and keep following it. */
@@ -94,7 +98,7 @@ function mount() {
   followTheme(root, config.theme)
 
   // createElement rather than JSX so this stays a plain .js entry point.
-  createRoot(root).render(createElement(ChatWidget, { label: config.label }))
+  createRoot(root).render(createElement(ChatWidget, { label: config.label, siteUrl: config.siteUrl }))
 }
 
 // `defer` already guarantees a parsed document, but the tag may also be pasted
