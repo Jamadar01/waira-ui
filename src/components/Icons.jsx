@@ -112,6 +112,12 @@ export const Moon = (p) => (
   </Icon>
 )
 
+export const Close = (p) => (
+  <Icon {...p}>
+    <path d="M18 6 6 18M6 6l12 12" />
+  </Icon>
+)
+
 export const Menu = (p) => (
   <Icon {...p}>
     <path d="M4 7h16M4 12h16M4 17h16" />

@@ -1,0 +1,182 @@
+/* ==========================================================================
+   Embedded widget chrome
+   --------------------------------------------------------------------------
+   Only loaded by src/mount.js, and only ever inside the shadow root, so none
+   of this reaches the host page. The standalone app never sees this file.
+
+   base.css does its work on `html`, `body` and `#root`, none of which exist
+   inside a shadow tree — so the element defaults it provides have to be
+   restated here on `.waira-root`, which is the widget's stand-in for <body>.
+   ========================================================================== */
+
+:host {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  /* Above anything the host page is likely to stack — the portfolio alone has
+     a star field, nebula orbs and a sticky nav all competing. */
+  z-index: 2147483000;
+  /* The host box is only as big as the launcher; the panel is positioned out
+     of it. Without this the fixed host would swallow clicks page-wide. */
+  width: 56px;
+  height: 56px;
+}
+
+.waira-root {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.waira-root *,
+.waira-root *::before,
+.waira-root *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   Launcher
+   -------------------------------------------------------------------------- */
+
+.waira-launcher {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  color: #fff;
+  background: var(--gradient);
+  border: none;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  transition:
+    transform 200ms var(--ease),
+    opacity 160ms var(--ease);
+}
+
+.waira-launcher:hover {
+  transform: scale(1.06);
+}
+
+.waira-launcher:active {
+  transform: scale(0.96);
+}
+
+/* Hidden rather than unmounted so the panel's open/close transition has
+   something stable to sit next to. */
+.waira-launcher--hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+}
+
+/* --------------------------------------------------------------------------
+   Panel
+   -------------------------------------------------------------------------- */
+
+.waira-panel {
+  position: absolute;
+  right: 0;
+  bottom: 72px;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 620px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 112px);
+  overflow: hidden;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  transform-origin: bottom right;
+  animation: waira-in 220ms var(--ease);
+}
+
+/* `display: flex` above outranks the UA's `[hidden] { display: none }`, so the
+   closed panel needs saying explicitly or it never hides. */
+.waira-panel[hidden] {
+  display: none;
+}
+
+@keyframes waira-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The chat was built for a full viewport: a 272px sidebar column beside the
+   thread. In the panel there is no sidebar, so collapse the grid to one
+   column. The `@media (max-width: 860px)` rule in app.css cannot do this for
+   us — it measures the host page's viewport, not this 400px panel. */
+.waira-panel .app {
+  grid-template-columns: 1fr;
+  height: 100%;
+}
+
+/* Tighter padding than the full-page layout, which assumes room to breathe. */
+.waira-panel .topbar {
+  padding: 10px 12px;
+}
+
+.waira-panel .thread__inner {
+  padding: 18px 12px 6px;
+}
+
+.waira-panel .composer {
+  padding: 8px 12px 12px;
+}
+
+.waira-panel .welcome {
+  padding: 26px 14px;
+}
+
+.waira-panel .msg--user .msg__body {
+  max-width: 88%;
+}
+
+.waira-panel .suggestions {
+  grid-template-columns: 1fr;
+}
+
+.waira-panel .welcome h1 {
+  font-size: 22px;
+}
+
+/* Phones: the panel takes the screen, minus a little breathing room. */
+@media (max-width: 520px) {
+  :host {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .waira-panel {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+    height: auto;
+    left: 12px;
+    top: 12px;
+    max-width: none;
+    max-height: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waira-panel {
+    animation: none;
+  }
+
+  .waira-launcher {
+    transition: none;
+  }
+}
