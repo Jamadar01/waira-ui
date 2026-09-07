@@ -1,5 +1,5 @@
 import ThemeToggle from './ThemeToggle.jsx'
-import { Close, Collapse, Expand, Menu } from './Icons.jsx'
+import { Close, ExternalLink, Menu } from './Icons.jsx'
 import Logo from './Logo.jsx'
 
 export default function TopBar({
@@ -9,8 +9,7 @@ export default function TopBar({
   onOpenSidebar,
   embedded = false,
   onClose,
-  expanded = false,
-  onToggleExpand,
+  siteUrl,
 }) {
   return (
     <header className="topbar">
@@ -35,15 +34,22 @@ export default function TopBar({
           own to toggle — it gets a way out of the panel instead. */}
       {embedded ? (
         <>
-          <button
-            type="button"
-            className="icon-btn waira-expand"
-            onClick={onToggleExpand}
-            aria-label={expanded ? 'Exit full view' : 'Full view'}
-            title={expanded ? 'Exit full view' : 'Full view'}
-          >
-            {expanded ? <Collapse size={18} /> : <Expand size={18} />}
-          </button>
+          {/* Opens the real Waira site in a new tab rather than growing the
+              panel. The conversation does not travel with it — the backend
+              answers each question on its own, so there is no thread to
+              carry over. */}
+          {siteUrl && (
+            <a
+              className="icon-btn"
+              href={siteUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open the full chat in a new tab"
+              title="Open full chat"
+            >
+              <ExternalLink size={18} />
+            </a>
+          )}
           <button type="button" className="icon-btn" onClick={onClose} aria-label="Close chat">
             <Close size={19} />
           </button>

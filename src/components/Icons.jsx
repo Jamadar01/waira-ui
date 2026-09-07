@@ -112,15 +112,10 @@ export const Moon = (p) => (
   </Icon>
 )
 
-export const Expand = (p) => (
+export const ExternalLink = (p) => (
   <Icon {...p}>
-    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
-  </Icon>
-)
-
-export const Collapse = (p) => (
-  <Icon {...p}>
-    <path d="M14 10h6V4M10 14H4v6M20 4l-6 6M4 20l6-6" />
+    <path d="M14 4h6v6M11 13 20 4" />
+    <path d="M19 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5" />
   </Icon>
 )
 

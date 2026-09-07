@@ -12,9 +12,8 @@ import { WairaMark } from './components/Icons.jsx'
  * full page rather than a 400px panel. Nothing here duplicates the message
  * logic, so the panel can never drift from the hosted app.
  */
-export default function ChatWidget({ label = 'Ask about Wajid' }) {
+export default function ChatWidget({ label = 'Ask about Wajid', siteUrl }) {
   const [open, setOpen] = useState(false)
-  const [expanded, setExpanded] = useState(false)
   // The chat mounts on first open and stays mounted after that, so closing the
   // panel does not throw away the conversation.
   const [everOpened, setEverOpened] = useState(false)
@@ -24,8 +23,6 @@ export default function ChatWidget({ label = 'Ask about Wajid' }) {
 
   const close = useCallback(() => {
     setOpen(false)
-    // Reopen small. Full view is a deliberate act, not a mode to get stuck in.
-    setExpanded(false)
     // Send focus back where it came from, or the keyboard user is stranded at
     // the top of the host page.
     launcherRef.current?.focus()
@@ -58,17 +55,12 @@ export default function ChatWidget({ label = 'Ask about Wajid' }) {
       {everOpened && (
         <div
           ref={panelRef}
-          className={`waira-panel${expanded ? ' waira-panel--full' : ''}`}
+          className="waira-panel"
           role="dialog"
           aria-label="Chat with Waira"
           hidden={!open}
         >
-          <App
-            embedded
-            onClose={close}
-            expanded={expanded}
-            onToggleExpand={() => setExpanded((prev) => !prev)}
-          />
+          <App embedded onClose={close} siteUrl={siteUrl} />
         </div>
       )}
 
