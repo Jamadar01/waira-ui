@@ -32,8 +32,12 @@ export default defineConfig({
       formats: ['iife'],
       fileName: () => 'waira-widget.js',
     },
-    outDir: 'dist-widget',
-    emptyOutDir: true,
+    // Emitted into the standalone site's own output, so Vercel serves it at
+     // https://waira-ui.vercel.app/waira-widget.js — that URL is what the
+     // portfolio's script tag points at. `emptyOutDir: false` because the app
+     // build runs first and this must not wipe it.
+    outDir: 'dist',
+    emptyOutDir: false,
     cssCodeSplit: false,
     // The standalone build keeps its own hashed assets; this one is a single
     // file whose URL people paste into a script tag, so it must stay stable.
