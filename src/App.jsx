@@ -14,8 +14,14 @@ const nextId = (prefix) => `${prefix}-${Date.now()}-${idCounter++}`
 
 const newChat = () => ({ id: nextId('c'), title: 'New chat', group: 'Today', messages: [] })
 
-export default function App() {
-  const { theme, toggleTheme } = useTheme()
+/**
+ * `embedded` renders the chat as it appears inside the widget panel: no
+ * sidebar, no theme toggle, and a close button in place of the menu. The
+ * message logic below is shared with the full page rather than forked, so the
+ * two can never answer differently.
+ */
+export default function App({ embedded = false, onClose }) {
+  const { theme, toggleTheme } = useTheme(!embedded)
 
   const [chats, setChats] = useState(() => [newChat()])
   const [activeId, setActiveId] = useState(() => chats[0].id)
@@ -41,6 +47,10 @@ export default function App() {
 
   // Keep the newest turn in view as messages arrive.
   useEffect(() => {
+    // Nothing to follow before the first message — and in the widget panel the
+    // welcome screen is taller than the viewport, so scrolling to the bottom
+    // here would open the chat with the greeting already scrolled off.
+    if (active?.messages.length === 0 && !pending) return
     const el = threadRef.current
     if (el) el.scrollTop = el.scrollHeight
   }, [active?.messages.length, pending, activeId])
@@ -112,15 +122,17 @@ export default function App() {
 
   return (
     <div className="app">
-      <Sidebar
-        conversations={chats}
-        activeId={active.id}
-        onSelect={handleSelect}
-        onNew={handleNewChat}
-        open={sidebarOpen}
-      />
+      {!embedded && (
+        <Sidebar
+          conversations={chats}
+          activeId={active.id}
+          onSelect={handleSelect}
+          onNew={handleNewChat}
+          open={sidebarOpen}
+        />
+      )}
 
-      {sidebarOpen && (
+      {!embedded && sidebarOpen && (
         <div
           className="backdrop"
           onClick={() => setSidebarOpen(false)}
@@ -130,10 +142,12 @@ export default function App() {
 
       <main className="main">
         <TopBar
-          title={active.title}
+          title={embedded ? "Wajid's assistant" : active.title}
           theme={theme}
           onToggleTheme={toggleTheme}
           onOpenSidebar={() => setSidebarOpen(true)}
+          embedded={embedded}
+          onClose={onClose}
         />
 
         <div className="thread" ref={threadRef}>
