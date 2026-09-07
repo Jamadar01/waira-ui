@@ -20,7 +20,7 @@ const newChat = () => ({ id: nextId('c'), title: 'New chat', group: 'Today', mes
  * message logic below is shared with the full page rather than forked, so the
  * two can never answer differently.
  */
-export default function App({ embedded = false, onClose }) {
+export default function App({ embedded = false, onClose, expanded = false, onToggleExpand }) {
   const { theme, toggleTheme } = useTheme(!embedded)
 
   const [chats, setChats] = useState(() => [newChat()])
@@ -148,6 +148,8 @@ export default function App({ embedded = false, onClose }) {
           onOpenSidebar={() => setSidebarOpen(true)}
           embedded={embedded}
           onClose={onClose}
+          expanded={expanded}
+          onToggleExpand={onToggleExpand}
         />
 
         <div className="thread" ref={threadRef}>

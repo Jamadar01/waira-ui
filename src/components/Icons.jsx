@@ -112,6 +112,18 @@ export const Moon = (p) => (
   </Icon>
 )
 
+export const Expand = (p) => (
+  <Icon {...p}>
+    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+  </Icon>
+)
+
+export const Collapse = (p) => (
+  <Icon {...p}>
+    <path d="M14 10h6V4M10 14H4v6M20 4l-6 6M4 20l6-6" />
+  </Icon>
+)
+
 export const Close = (p) => (
   <Icon {...p}>
     <path d="M18 6 6 18M6 6l12 12" />

@@ -1,5 +1,5 @@
 import ThemeToggle from './ThemeToggle.jsx'
-import { Close, Menu } from './Icons.jsx'
+import { Close, Collapse, Expand, Menu } from './Icons.jsx'
 import Logo from './Logo.jsx'
 
 export default function TopBar({
@@ -9,6 +9,8 @@ export default function TopBar({
   onOpenSidebar,
   embedded = false,
   onClose,
+  expanded = false,
+  onToggleExpand,
 }) {
   return (
     <header className="topbar">
@@ -32,9 +34,20 @@ export default function TopBar({
       {/* The widget follows the host page's theme, so it has nothing of its
           own to toggle — it gets a way out of the panel instead. */}
       {embedded ? (
-        <button type="button" className="icon-btn" onClick={onClose} aria-label="Close chat">
-          <Close size={19} />
-        </button>
+        <>
+          <button
+            type="button"
+            className="icon-btn waira-expand"
+            onClick={onToggleExpand}
+            aria-label={expanded ? 'Exit full view' : 'Full view'}
+            title={expanded ? 'Exit full view' : 'Full view'}
+          >
+            {expanded ? <Collapse size={18} /> : <Expand size={18} />}
+          </button>
+          <button type="button" className="icon-btn" onClick={onClose} aria-label="Close chat">
+            <Close size={19} />
+          </button>
+        </>
       ) : (
         <ThemeToggle theme={theme} onToggle={onToggleTheme} />
       )}
