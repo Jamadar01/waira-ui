@@ -151,11 +151,35 @@
   font-size: 22px;
 }
 
+/* Full view — the panel leaves its corner and takes the window.
+
+   `position: fixed` resolves against the viewport rather than the host
+   element, which is why this can escape a 56px host box at all. Capped and
+   centred rather than edge-to-edge: a chat thread stretched across a wide
+   monitor is worse to read, not better. */
+.waira-panel--full {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  bottom: 24px;
+  left: 24px;
+  width: auto;
+  height: auto;
+  max-width: 1040px;
+  max-height: none;
+  margin: 0 auto;
+}
+
 /* Phones: the panel takes the screen, minus a little breathing room. */
 @media (max-width: 520px) {
   :host {
     right: 16px;
     bottom: 16px;
+  }
+
+  /* Already effectively full screen here, so the toggle has nothing to do. */
+  .waira-expand {
+    display: none;
   }
 
   .waira-panel {
